@@ -1,0 +1,37 @@
+var connect=require('connect');
+var http=require('http');
+var fs=require('fs');
+
+var app=connect();
+
+function profile(request,response){
+    console.log("With connect profile page has been mapped");
+    if(request.method=='GET')
+    {
+        response.writeHead(200,{"content-Type":"text/html"});
+        fs.createReadStream("./profile.html").pipe(response);
+    }
+}
+
+function home(request,response) {
+    console.log("With connect home page has been mapped");
+    if(request.method=='GET')
+    {
+        response.writeHead(200,{"content-Type":"text/html"});
+        fs.createReadStream("./index.html").pipe(response);
+    }
+}
+
+
+//use function calls the function when home page is visited
+//app.use(doFirst);
+
+
+//use function calls the function when the subdomain is calls , sub domain is 1st parameter. second arg is the function that will be called
+
+
+app.use('/profile',profile);
+app.use('/home',home);
+
+http.createServer(app).listen(8888);
+console.log("Server is hosted using the connect module");
